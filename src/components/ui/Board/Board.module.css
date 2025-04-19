@@ -1,0 +1,26 @@
+@reference "../../../index.css";
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.resizablePanelGroup {
+  @apply rounded-base border-2 border-border
+    text-main-foreground shadow-shadow;
+
+  background-size: 70px 70px;
+  background-color: var(--background);
+  background-image: linear-gradient(90deg, #80808033 1px, #0000 0),
+    linear-gradient(#80808033 1px, #0000 0);
+  max-width: max-content;
+  height: 100%;
+}
+
+.row {
+}
+.cell {
+  width: 70px;
+  height: 70px;
+  text-align: center;
+}
