@@ -8,19 +8,21 @@ interface ProsBoard {
 }
 
 export function Board({ rowsAndColumns = 5 }: ProsBoard) {
-  const renderRows = (rowsAndColumns: number) => {
-    return Array.from({ length: rowsAndColumns }).map((_, i) => {
-      const renderCells = Array.from({ length: rowsAndColumns }).map((_, i) => {
-        return <td className={classNames(styles.cell)}>{i + 1}</td>;
-      });
-
+  const renderTablet = Array.from({ length: rowsAndColumns }).map((_, i) => {
+    const renderCells = Array.from({ length: rowsAndColumns }).map((_, i) => {
       return (
-        <tr key={i} className={classNames(styles.row)}>
-          {...renderCells}
-        </tr>
+        <td key={i} className={classNames(styles.cell)}>
+          {''}
+        </td>
       );
     });
-  };
+
+    return (
+      <tr key={i} className={classNames(styles.row)}>
+        {...renderCells}
+      </tr>
+    );
+  });
 
   return (
     <div className={classNames(styles.container)}>
@@ -30,9 +32,7 @@ export function Board({ rowsAndColumns = 5 }: ProsBoard) {
         <div className={classNames(styles.wrapperTable)}>
           <Coordinates rowsAndColumns={rowsAndColumns} type="vertical" />
 
-          <table className={classNames(styles.tabel)}>
-            {renderRows(rowsAndColumns)}
-          </table>
+          <table className={classNames(styles.tabel)}>{renderTablet}</table>
         </div>
       </div>
     </div>
