@@ -1,3 +1,14 @@
+import { Board } from '@/components/Board';
+
+import { useSettingContext } from '@/store/ContextSetting';
+
 export const Battlefield = () => {
-  return <div></div>;
+  const {
+    state: { rowsAndColumns },
+  } = useSettingContext();
+  return (
+    <div>
+      <Board rowsAndColumns={rowsAndColumns} />
+    </div>
+  );
 };

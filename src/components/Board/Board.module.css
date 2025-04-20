@@ -1,0 +1,38 @@
+@reference "../../assets/css/index.css";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.wrapperTable {
+  display: flex;
+}
+.tabel {
+  background-color: var(--background);
+}
+
+.row:first-child .cell {
+  border-top: var(--border-width) solid var(--border);
+}
+.row .cell:first-child {
+  border-left: var(--border-width) solid var(--border);
+}
+
+.row:last-child {
+  border-right: none;
+}
+.cell {
+  border-left: var(--border-width) solid var(--border-gray);
+  border-bottom: var(--border-width) solid var(--border-gray);
+  width: 70px;
+  height: 70px;
+  text-align: center;
+}
+.row:last-child .cell {
+  border-bottom: none;
+}
+.cell:last-child {
+  border-right: none;
+}

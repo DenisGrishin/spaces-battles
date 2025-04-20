@@ -1,0 +1,5 @@
+@reference "./index.css";
+
+.border-custom {
+  @apply overflow-hidden rounded-base border-2 border-border  font-base shadow-shadow;
+}
