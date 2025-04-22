@@ -55,7 +55,7 @@ export const Coordinates = ({
         }
 
         return (
-          <li className={classNames(styles.li)}>
+          <li key={i} className={classNames(styles.li)}>
             <span> {content}</span>
           </li>
         );

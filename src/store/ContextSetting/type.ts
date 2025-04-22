@@ -1,10 +1,13 @@
 export interface SettingState {
   rowsAndColumns: number;
+  stateBattlefield: string[][];
 }
 
-export interface Action {
-  type: 'resetState';
-  setting: {
-    rowsAndColumns: number;
-  };
-}
+export type Action =
+  | {
+      type: 'resetState';
+    }
+  | {
+      type: 'createStateBattlefield';
+      value: number;
+    };

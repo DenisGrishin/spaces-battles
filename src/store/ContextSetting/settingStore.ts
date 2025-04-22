@@ -2,6 +2,13 @@ import { type Action, type SettingState } from './type.ts';
 
 export const stateSetting: SettingState = {
   rowsAndColumns: 5,
+  stateBattlefield: [
+    ['', '', '', '', '', ''],
+    ['', '', '', '', '', ''],
+    ['', '', '', '', '', ''],
+    ['', '', '', '', '', ''],
+    ['', '', '', '', '', ''],
+  ],
 };
 
 export const reducerSetting = (
@@ -14,6 +21,19 @@ export const reducerSetting = (
         ...state,
       };
     }
+    case 'createStateBattlefield': {
+      return {
+        ...state,
+        rowsAndColumns: action.value,
+        stateBattlefield: [
+          /* eslint-disable @typescript-eslint/no-unused-vars */
+          ...Array.from({ length: action.value }).map((_row) => {
+            return [...Array.from({ length: action.value }).map((_cell) => '')];
+          }),
+        ],
+      };
+    }
+
     default:
       return state;
   }
