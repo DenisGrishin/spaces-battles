@@ -1,16 +1,19 @@
 import { Board } from '@/components/Board';
 
 import { useSettingContext } from '@/store/ContextSetting';
-import { useEffect } from 'react';
+import { Droppable } from '../Droppable';
 
 export const Battlefield = () => {
   const {
-    state: { rowsAndColumns },
+    state: { rowsAndColumns, stateBattlefield },
   } = useSettingContext();
 
   return (
-    <div>
-      <Board rowsAndColumns={rowsAndColumns} />
-    </div>
+    <Droppable>
+      <Board
+        rowsAndColumns={rowsAndColumns}
+        stateBattlefield={stateBattlefield}
+      />
+    </Droppable>
   );
 };

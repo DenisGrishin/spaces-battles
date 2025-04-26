@@ -1,10 +1,17 @@
+import { DndContext } from '@dnd-kit/core';
 import { Battlefield } from './modules/Battlefield';
+import { BoardShips } from './modules/BoardShips/BoardShips';
 import { ProviderSetting } from './store/ContextSetting/';
+import Test from './test';
 
 function App() {
   return (
     <ProviderSetting>
-      <Battlefield />
+      <DndContext>
+        <Battlefield />
+
+        <BoardShips />
+      </DndContext>
     </ProviderSetting>
   );
 }
