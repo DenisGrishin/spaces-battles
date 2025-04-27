@@ -12,30 +12,18 @@
 .tabel {
   background-color: var(--background);
   position: relative;
-  width: 350px;
-  height: 350px;
-}
-
-.row:first-child .cell {
+  display: grid;
   border-top: var(--border-width) solid var(--border);
-}
-.row .cell:first-child {
   border-left: var(--border-width) solid var(--border);
-}
-
-.row:last-child {
-  border-right: none;
+  background-image: linear-gradient(
+      to left,
+      var(--border-gray) 2px,
+      transparent 1px
+    ),
+    linear-gradient(to top, var(--border-gray) 2px, transparent 1px);
+  background-size: 4.4rem 4.4rem;
 }
 .cell {
-  border-left: var(--border-width) solid var(--border-gray);
-  border-bottom: var(--border-width) solid var(--border-gray);
   width: 70px;
   height: 70px;
-  text-align: center;
-}
-.row:last-child .cell {
-  border-bottom: none;
-}
-.cell:last-child {
-  border-right: none;
 }

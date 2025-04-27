@@ -30,22 +30,11 @@ export function Board({ rowsAndColumns = 5, stateBattlefield }: ProsBoard) {
   const snapToGridModifier = createSnapModifier(70);
 
   const renderTablet = useMemo(() => {
-    return stateBattlefield.map((row, indxRow) => {
-      const renderCells = row.map((cell, indxCell) => {
-        return (
-          <Ship
-            key={indxCell}
-            index={indxCell}
-            customClassName={styles.cell}
-            dataShip={cell}
-          />
-        );
-      });
-
+    return stateBattlefield.flat().map((cell, indxRow) => {
       return (
-        <tr key={indxRow} className={classNames(styles.row)}>
-          {...renderCells}
-        </tr>
+        <div key={indxRow} className={classNames(styles.cell)}>
+          {cell}
+        </div>
       );
     });
   }, [stateBattlefield]);
@@ -59,7 +48,12 @@ export function Board({ rowsAndColumns = 5, stateBattlefield }: ProsBoard) {
           <Coordinates rowsAndColumns={rowsAndColumns} type="vertical" />
 
           <DndContext modifiers={[restrictToParentElement, snapToGridModifier]}>
-            <table className={classNames(styles.tabel)}>{renderTablet}</table>
+            <div
+              className={classNames(styles.tabel)}
+              style={{ gridTemplateColumns: `repeat(${rowsAndColumns}, 1fr)` }}
+            >
+              {renderTablet}
+            </div>
           </DndContext>
         </div>
       </div>
