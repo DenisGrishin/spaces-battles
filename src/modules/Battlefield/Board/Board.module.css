@@ -1,4 +1,4 @@
-@reference "../../assets/css/index.css";
+@reference "../../../assets/css/index.css";
 
 .container {
   display: flex;
@@ -11,6 +11,9 @@
 }
 .tabel {
   background-color: var(--background);
+  position: relative;
+  width: 350px;
+  height: 350px;
 }
 
 .row:first-child .cell {

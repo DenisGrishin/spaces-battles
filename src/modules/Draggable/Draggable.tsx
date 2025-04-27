@@ -2,19 +2,31 @@ import React from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 
-export function Draggable({ children }: { children: React.ReactNode }) {
+interface UseDraggableArguments {
+  id: string | number;
+  attributes?: {
+    role?: string;
+    roleDescription?: string;
+    tabIndex?: number;
+  };
+  // data?: Record<string, any>;
+  disabled?: boolean;
+  children: React.ReactNode;
+}
+
+export function Draggable({ children, id }: UseDraggableArguments) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: 'draggable',
+    id,
   });
   const style = transform
     ? {
         transform: CSS.Translate.toString(transform),
       }
-    : undefined;
+    : {};
 
   return (
-    <button ref={setNodeRef} style={style} {...listeners} {...attributes}>
+    <td ref={setNodeRef} style={style} {...listeners} {...attributes}>
       {children}
-    </button>
+    </td>
   );
 }

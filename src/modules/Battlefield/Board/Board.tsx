@@ -2,37 +2,43 @@ import classNames from 'classnames';
 
 import styles from './Board.module.css';
 import { Coordinates } from './components/Coordinates/Coordinates';
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
+import Ship from './components/Ship/Ship';
+import { DndContext, Modifier } from '@dnd-kit/core';
+
+import { restrictToBoundingRect } from '../utilities/restrictToBoundingRect';
+import { createSnapModifier } from '@dnd-kit/modifiers';
 
 interface ProsBoard {
   rowsAndColumns: number;
   stateBattlefield: string[][];
 }
 
-export function Board({ rowsAndColumns = 5, stateBattlefield }: ProsBoard) {
-  // const renderTablet = Array.from({ length: rowsAndColumns }).map((_, i) => {
-  //   const renderCells = Array.from({ length: rowsAndColumns }).map((_, i) => {
-  //     return (
-  //       <td key={i} className={classNames(styles.cell)}>
-  //         {''}
-  //       </td>
-  //     );
-  //   });
+const restrictToParentElement: Modifier = ({
+  containerNodeRect,
+  draggingNodeRect,
+  transform,
+}) => {
+  if (!draggingNodeRect || !containerNodeRect) {
+    return transform;
+  }
 
-  //   return (
-  //     <tr key={i} className={classNames(styles.row)}>
-  //       {...renderCells}
-  //     </tr>
-  //   );
-  // });
+  return restrictToBoundingRect(transform, draggingNodeRect, containerNodeRect);
+};
+
+export function Board({ rowsAndColumns = 5, stateBattlefield }: ProsBoard) {
+  const snapToGridModifier = createSnapModifier(70);
 
   const renderTablet = useMemo(() => {
     return stateBattlefield.map((row, indxRow) => {
       const renderCells = row.map((cell, indxCell) => {
         return (
-          <td key={indxCell} className={classNames(styles.cell)}>
-            {cell}
-          </td>
+          <Ship
+            key={indxCell}
+            index={indxCell}
+            customClassName={styles.cell}
+            dataShip={cell}
+          />
         );
       });
 
@@ -52,7 +58,9 @@ export function Board({ rowsAndColumns = 5, stateBattlefield }: ProsBoard) {
         <div className={classNames(styles.wrapperTable)}>
           <Coordinates rowsAndColumns={rowsAndColumns} type="vertical" />
 
-          <table className={classNames(styles.tabel)}>{renderTablet}</table>
+          <DndContext modifiers={[restrictToParentElement, snapToGridModifier]}>
+            <table className={classNames(styles.tabel)}>{renderTablet}</table>
+          </DndContext>
         </div>
       </div>
     </div>

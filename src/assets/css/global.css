@@ -3,70 +3,35 @@
 .border-custom {
   @apply overflow-hidden rounded-base border-2 border-border  font-base shadow-shadow;
 }
-.cart {
-  display: flex;
-  padding: 1rem;
+.container {
+  position: relative;
+  background-image: linear-gradient(
+      to right,
+      rgb(203 213 225) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgb(203 213 225) 1px, transparent 1px);
+  background-size: 70px 70px;
   width: 100%;
-  min-height: 8rem;
-  border: 1px solid black;
-  border-radius: 1rem;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
+  height: 24rem;
 }
 
-.cart-item {
-  border: 1px solid black;
-  padding: 0.5rem 2rem;
-  font-size: 1.5rem;
-  border-radius: 1rem;
-  height: fit-content;
-}
-.fruit-item {
-  border: 1px solid black;
-  padding: 0.5rem 2rem;
-  font-size: 1.5rem;
-  border-radius: 1rem;
-  background-color: white;
-}
-.fruit-item:hover {
-  cursor: grab;
-}
-.fruit-item:active {
-  cursor: grabbing;
-}
-.main {
-  display: flex;
-  flex-direction: column;
+.draggable {
+  background: rgb(203 213 225);
+  height: 70px;
+  width: 70px;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  /* Center the content */
   align-items: center;
-  gap: 4rem;
-  padding: 1rem;
-}
-
-.fruit-list-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-}
-.fruit-list-section > h1 {
-  text-decoration: underline;
-}
-
-.fruit-list {
   display: flex;
   justify-content: center;
-  width: 100%;
-  gap: 1rem;
-}
 
-.cart-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  width: 75%;
-}
-.cart-section > h1 {
-  text-decoration: underline;
+  /* Indicate that the element is draggable */
+  cursor: move;
+  user-select: none;
+  touch-action: none;
 }

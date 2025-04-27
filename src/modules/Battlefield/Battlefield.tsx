@@ -1,7 +1,6 @@
-import { Board } from '@/components/Board';
-
 import { useSettingContext } from '@/store/ContextSetting';
-import { Droppable } from '../Droppable';
+
+import { Board } from './Board';
 
 export const Battlefield = () => {
   const {
@@ -9,11 +8,9 @@ export const Battlefield = () => {
   } = useSettingContext();
 
   return (
-    <Droppable>
-      <Board
-        rowsAndColumns={rowsAndColumns}
-        stateBattlefield={stateBattlefield}
-      />
-    </Droppable>
+    <Board
+      rowsAndColumns={rowsAndColumns}
+      stateBattlefield={stateBattlefield}
+    />
   );
 };

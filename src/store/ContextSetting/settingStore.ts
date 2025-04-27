@@ -3,11 +3,11 @@ import { type Action, type SettingState } from './type.ts';
 export const stateSetting: SettingState = {
   rowsAndColumns: 5,
   stateBattlefield: [
-    ['a1', 'a2', '', '', '', ''],
-    ['', '', '', '', '', ''],
-    ['', '', '', '', '', ''],
-    ['', '', '', '', '', ''],
-    ['', '', '', '', '', ''],
+    ['a1', '', '', '', ''],
+    ['', '', '', '', ''],
+    ['', '', '', '', ''],
+    ['', '', '', '', ''],
+    ['', '', '', '', ''],
   ],
 };
 
