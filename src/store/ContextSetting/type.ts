@@ -10,4 +10,8 @@ export type Action =
   | {
       type: 'createStateBattlefield';
       value: number;
+    }
+  | {
+      type: 'updateStateBattlefield';
+      newStateBattlefield: string[][];
     };

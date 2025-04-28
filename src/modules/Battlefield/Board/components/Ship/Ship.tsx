@@ -5,15 +5,13 @@ import { CSS } from '@dnd-kit/utilities';
 
 const Ship = ({
   dataShip,
-  index,
   customClassName,
 }: {
   dataShip: string;
-  index: number;
-  customClassName: string;
+  customClassName?: string;
 }) => {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: index,
+    id: dataShip,
   });
   const style = transform
     ? {
@@ -22,21 +20,17 @@ const Ship = ({
     : {};
 
   return (
-    <td
-      className={(classNames(styles.cell), customClassName)}
+    <div
       ref={setNodeRef}
       style={style}
+      className={classNames(customClassName, {
+        [styles.ship]: !!dataShip,
+      })}
       {...listeners}
       {...attributes}
     >
-      <div
-        className={classNames({
-          [styles.ship]: !!dataShip,
-        })}
-      >
-        {dataShip}
-      </div>
-    </td>
+      {dataShip}
+    </div>
   );
 };
 

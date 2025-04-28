@@ -1,1 +1,1 @@
-export { restrictToBoundingRect } from './restrictToBoundingRect';
+export { restrictToParentElement } from './restrictToParentElement';

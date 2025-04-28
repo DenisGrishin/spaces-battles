@@ -9,6 +9,9 @@ export function restrictToBoundingRect(
   const value = {
     ...transform,
   };
+  // console.log('rect', rect);
+  // console.log('boundingRect', boundingRect);
+  // console.log('transform', transform);
 
   if (rect.top + transform.y <= boundingRect.top) {
     value.y = boundingRect.top - rect.top;

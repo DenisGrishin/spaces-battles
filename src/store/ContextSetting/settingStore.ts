@@ -33,7 +33,12 @@ export const reducerSetting = (
         ],
       };
     }
-
+    case 'updateStateBattlefield': {
+      return {
+        ...state,
+        stateBattlefield: action.newStateBattlefield,
+      };
+    }
     default:
       return state;
   }

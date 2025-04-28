@@ -10,11 +10,13 @@
   display: flex;
 }
 .tabel {
-  background-color: var(--background);
-  position: relative;
   display: grid;
+  position: relative;
+
   border-top: var(--border-width) solid var(--border);
   border-left: var(--border-width) solid var(--border);
+
+  background-color: var(--background);
   background-image: linear-gradient(
       to left,
       var(--border-gray) 2px,
@@ -24,6 +26,6 @@
   background-size: 4.4rem 4.4rem;
 }
 .cell {
-  width: 70px;
-  height: 70px;
+  width: 4.4rem;
+  height: 4.4rem;
 }
