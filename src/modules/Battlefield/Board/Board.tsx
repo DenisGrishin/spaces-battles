@@ -13,6 +13,7 @@ import {
 import { DropCell } from '@/modules/DropCell';
 import { TableBoard } from './components/TabelBoard';
 import { Action } from '@/store/ContextSetting/type';
+import { moveToShip } from '../utilities';
 
 interface ProsBoard {
   rowsAndColumns: number;
@@ -20,41 +21,8 @@ interface ProsBoard {
   dispatch: Dispatch<Action>;
 }
 
-interface PropsMoveToShip {
-  boardState: string[][];
-  shipId: string;
-  toZone: string;
-}
-
 const SIZE_CELL: number = 70;
-const deleteDragShip = ({
-  boardState,
-  shipId,
-}: Omit<PropsMoveToShip, 'toZone'>) => {
-  return boardState.map((row) => {
-    return row.map((cell) => {
-      if (cell === shipId) return '';
 
-      return cell;
-    });
-  });
-};
-
-// ! должен выполнять при dragEnd
-const moveToShip = ({ boardState, shipId, toZone }: PropsMoveToShip) => {
-  return deleteDragShip({ boardState, shipId }).map((row, indexRow) => {
-    const [idRow, idCell] = toZone.split('-');
-    if (indexRow !== Number(idRow)) return row;
-
-    return row.map((cell, cellIndex) => {
-      if (Number(idCell) === cellIndex) {
-        return shipId;
-      }
-
-      return cell;
-    });
-  });
-};
 export function Board({
   rowsAndColumns = 5,
   stateBattlefield,
