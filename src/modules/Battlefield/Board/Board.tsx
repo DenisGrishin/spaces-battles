@@ -33,7 +33,7 @@ const chengeShip = ({
 }) => {
   const emptyArr = arr.map((row) => {
     return row.map((cell) => {
-      if (cell === 'a1') return '';
+      if (cell === shipId) return '';
 
       return cell;
     });
@@ -42,9 +42,10 @@ const chengeShip = ({
   return emptyArr.map((row, indexRow) => {
     const [idRow, idCell] = toZone.split('-');
     if (indexRow !== Number(idRow)) return row;
+
     return row.map((cell, cellIndex) => {
       if (Number(idCell) === cellIndex) {
-        return 'a1';
+        return shipId;
       }
 
       // ! не удаляется потому что проскакивает первый уровень
@@ -60,7 +61,8 @@ export function Board({
 }: ProsBoard) {
   const snapToGridModifier = createSnapModifier(SIZE_CELL);
 
-  const ship = <Ship dataShip={'1'} customClassName={styles.cell} />;
+  const ship = <Ship dataShip={'a1'} customClassName={styles.cell} />;
+  const ship2 = <Ship dataShip={'b1'} customClassName={styles.cell} />;
 
   const renderTablet = useMemo(() => {
     return stateBattlefield.map((row, rowIndex, arr) => {
@@ -73,6 +75,7 @@ export function Board({
             arr={arr}
           >
             {cell === 'a1' && ship}
+            {cell === 'b1' && ship2}
           </DropCell>
         );
       });
