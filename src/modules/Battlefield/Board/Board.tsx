@@ -20,26 +20,29 @@ interface ProsBoard {
   dispatch: Dispatch<Action>;
 }
 
+interface PropsMoveToShip {
+  boardState: string[][];
+  shipId: string;
+  toZone: string;
+}
+
 const SIZE_CELL: number = 70;
-// ! должен выполнять при dragEnd
-const chengeShip = ({
-  arr,
+const deleteDragShip = ({
+  boardState,
   shipId,
-  toZone,
-}: {
-  arr: string[][];
-  shipId: any;
-  toZone: any;
-}) => {
-  const emptyArr = arr.map((row) => {
+}: Omit<PropsMoveToShip, 'toZone'>) => {
+  return boardState.map((row) => {
     return row.map((cell) => {
       if (cell === shipId) return '';
 
       return cell;
     });
   });
+};
 
-  return emptyArr.map((row, indexRow) => {
+// ! должен выполнять при dragEnd
+const moveToShip = ({ boardState, shipId, toZone }: PropsMoveToShip) => {
+  return deleteDragShip({ boardState, shipId }).map((row, indexRow) => {
     const [idRow, idCell] = toZone.split('-');
     if (indexRow !== Number(idRow)) return row;
 
@@ -47,8 +50,6 @@ const chengeShip = ({
       if (Number(idCell) === cellIndex) {
         return shipId;
       }
-
-      // ! не удаляется потому что проскакивает первый уровень
 
       return cell;
     });
@@ -88,10 +89,10 @@ export function Board({
     const { active, over } = event;
 
     if (!over) return;
-    const newState = chengeShip({
-      arr: stateBattlefield,
-      shipId: active.id,
-      toZone: over.id,
+    const newState = moveToShip({
+      boardState: stateBattlefield,
+      shipId: active.id as string,
+      toZone: over.id as string,
     });
 
     dispatch({ type: 'updateStateBattlefield', newStateBattlefield: newState });
