@@ -2,24 +2,15 @@ import classNames from 'classnames';
 
 import styles from './Board.module.css';
 import { Coordinates } from './components/Coordinates/Coordinates';
-import { type Dispatch, useMemo } from 'react';
+import { useMemo } from 'react';
 import Ship from './components/Ship/Ship';
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
 
-import {
-  createSnapModifier,
-  restrictToParentElement,
-} from '@dnd-kit/modifiers';
+import { createSnapModifier } from '@dnd-kit/modifiers';
 import { DropCell } from '@/modules/DropCell';
 import { TableBoard } from './components/TabelBoard';
-import { Action } from '@/store/ContextSetting/type';
 import { moveToShip } from '../utilities';
-
-interface ProsBoard {
-  rowsAndColumns: number;
-  stateBattlefield: string[][];
-  dispatch: Dispatch<Action>;
-}
+import { ProsBoard } from './type';
 
 const SIZE_CELL: number = 70;
 
@@ -30,8 +21,8 @@ export function Board({
 }: ProsBoard) {
   const snapToGridModifier = createSnapModifier(SIZE_CELL);
 
-  const ship = <Ship dataShip={'a1'} customClassName={styles.cell} />;
-  const ship2 = <Ship dataShip={'b1'} customClassName={styles.cell} />;
+  const ship = <Ship dataShip={'a1'} sizeShip="small" />;
+  const ship2 = <Ship dataShip={'b1'} />;
 
   const renderTablet = useMemo(() => {
     return stateBattlefield.map((row, rowIndex, arr) => {
