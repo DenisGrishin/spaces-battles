@@ -45,28 +45,16 @@ export function Board({
   }, [stateBattlefield]);
 
   function handleDragEnd(event: DragEndEvent) {
-    const { active, over, collisions } = event;
-
-    const coordinates = collisions?.map((el) => {
-      return el.id;
-    });
-    // ! зная эти координаты можно находить и удлять и пермещать
-    const nextCoordinates =
-      coordinates?.splice(0, coordinates.length / 2) || [];
-    const prevCoordinates = coordinates || [];
-    console.log(event);
+    const { active, over } = event;
 
     if (!over) return;
     const newStateBattlefield = moveToShip({
       boardState: stateBattlefield,
       shipId: active.id as string,
-      nextCoordinates: nextCoordinates as string[],
-      prevCoordinates: prevCoordinates as string[],
+      droppableId: over.id as string,
+      sizeShip: active.data.current?.length,
     });
-    // console.log(newStateBattlefield);
-
-    // console.log('prevCoordinates', prevCoordinates);
-    // console.log('nextCoordinates', nextCoordinates);
+    console.log(newStateBattlefield);
 
     dispatch({
       type: 'updateStateBattlefield',

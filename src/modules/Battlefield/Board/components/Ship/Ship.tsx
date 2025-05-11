@@ -17,7 +17,7 @@ const Ship = ({
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: dataShip,
     data: {
-      length: 3,
+      length: sizeShip === 'verySmall' ? 1 : 2,
     },
   });
   const style = transform

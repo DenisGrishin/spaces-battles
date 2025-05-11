@@ -1,63 +1,77 @@
-import { UniqueIdentifier } from '@dnd-kit/core';
-
 interface PropsMoveToShip {
   boardState: string[][];
   shipId: string;
-  nextCoordinates: string[];
-  prevCoordinates: string[];
+  droppableId: string;
+  sizeShip: number;
 }
 
-// ! функция которая разбивает строку на координаты
-// 0 : "1-0"
-// 1 : "1-1"
-// 2 : "1-2"
-const getCoordinates = (coordinates): number[] => {};
-
 const deleteDragShip = ({
+  shipId,
   boardState,
-  prevCoordinates,
-}: Omit<PropsMoveToShip, 'toZone' | 'nextCoordinates' | 'shipId'>) => {
-  const newBoard = [];
+  sizeShip,
+}: Omit<PropsMoveToShip, 'droppableId'>) => {
+  const shipIdCell: string[] = [];
 
-  const idsCell = prevCoordinates.map((el) => el.split('-')[1]);
-
-  for (let i = 0; i < boardState.length; i++) {
-    const newRow = boardState[i].map((cell: string, index: number) => {
-      if (idsCell.includes(String(index))) {
-        return '';
-      }
-
-      return cell;
-    });
-
-    newBoard.push(newRow);
+  for (let i = 1; i <= sizeShip; i++) {
+    shipIdCell.push(shipId[0] + i);
   }
 
-  return newBoard;
+  return boardState.map((row) => {
+    return row.map((cell) => {
+      if (shipIdCell.includes(cell)) {
+        return '';
+      }
+      return cell;
+    });
+  });
 };
 
 // ! должен выполнять при dragEnd
 export const moveToShip = ({
   boardState,
   shipId,
-  nextCoordinates,
-  prevCoordinates,
+  droppableId,
+  sizeShip,
 }: PropsMoveToShip) => {
-  const idsCell = nextCoordinates.map((el) => el.split('-')[1]);
-  const idsRow = nextCoordinates.map((el) => el.split('-')[0]);
+  const [rowId, cellId] = droppableId.split('-');
 
-  return deleteDragShip({ boardState, prevCoordinates }).map(
+  let count = 0;
+  const cor: string[] = [];
+  for (let i = 1; i <= sizeShip; i++) {
+    cor.push(shipId[0] + i);
+  }
+  let error = false;
+
+  const updateBoard = deleteDragShip({ shipId, boardState, sizeShip }).map(
     (row, indexRow) => {
-      if (!idsRow.includes(String(indexRow))) {
-        return row;
-      }
-      return row.map((cell, indexCell) => {
-        if (idsCell.includes(String(indexCell))) {
-          return 'a' + indexCell;
+      if (rowId !== String(indexRow)) return row;
+      const newRow = [];
+      for (let i = 0; i < row.length; i++) {
+        const element = row[i];
+
+        if (count || cellId === String(i)) {
+          if (element) {
+            newRow.push(element);
+            error = true;
+            continue;
+          }
+          newRow.push(cor[count]);
+
+          if (count === sizeShip - 1) {
+            count = 0;
+          } else {
+            count += 1;
+          }
+
+          continue;
         }
 
-        return cell;
-      });
+        newRow.push(element);
+      }
+
+      return newRow;
     }
   );
+
+  return error ? boardState : updateBoard;
 };
