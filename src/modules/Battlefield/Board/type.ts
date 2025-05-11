@@ -1,4 +1,4 @@
-import { Action } from '@dnd-kit/core/dist/store';
+import { Action } from '@/store/ContextSetting/type';
 import { type Dispatch } from 'react';
 
 export interface ProsBoard {

@@ -16,13 +16,15 @@ const Ship = ({
 }) => {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: dataShip,
+    data: {
+      length: 3,
+    },
   });
   const style = transform
     ? {
         transform: CSS.Translate.toString(transform),
       }
     : {};
-  console.log(sizeShip);
 
   return (
     <div

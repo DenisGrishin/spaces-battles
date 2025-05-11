@@ -16,7 +16,7 @@ export function DropCell({
   });
 
   return (
-    <div ref={setNodeRef} className={className}>
+    <div ref={setNodeRef} data-id={id} className={className}>
       {children}
     </div>
   );
