@@ -8,6 +8,7 @@
 }
 .wrapperTable {
   display: flex;
+  position: relative;
 }
 .tabel {
   display: grid;

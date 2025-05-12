@@ -4,12 +4,17 @@ import styles from './Board.module.css';
 import { Coordinates } from './components/Coordinates/Coordinates';
 import { useMemo } from 'react';
 import Ship from './components/Ship/Ship';
-import { DndContext, DragEndEvent } from '@dnd-kit/core';
+import {
+  DndContext,
+  DragEndEvent,
+  DragMoveEvent,
+  DragOverEvent,
+} from '@dnd-kit/core';
 
 import { createSnapModifier } from '@dnd-kit/modifiers';
 import { DropCell } from '@/modules/DropCell';
 import { TableBoard } from './components/TabelBoard';
-import { moveToShip } from '../utilities';
+import { dropToShip, moveToShip } from '../utilities';
 import { ProsBoard } from './type';
 
 const SIZE_CELL: number = 70;
@@ -48,13 +53,12 @@ export function Board({
     const { active, over } = event;
 
     if (!over) return;
-    const newStateBattlefield = moveToShip({
+    const newStateBattlefield = dropToShip({
       boardState: stateBattlefield,
       shipId: active.id as string,
       droppableId: over.id as string,
       sizeShip: active.data.current?.length,
     });
-    console.log(newStateBattlefield);
 
     dispatch({
       type: 'updateStateBattlefield',
@@ -62,6 +66,20 @@ export function Board({
     });
   }
 
+  function handleDragMove(event: DragMoveEvent) {
+    console.log(event);
+
+    moveToShip(event);
+  }
+  function handleDragOver(event: DragOverEvent) {
+    const test = ['4-3'];
+    console.log(event);
+    if (test.includes(String(event.over?.id))) {
+      event.active.data.current.isError = true;
+    }
+
+    // TODO запоменаем расположение коорднинат короблей и тогда при перетаскивание всегда проряем точку
+  }
   return (
     <div className={classNames(styles.container)}>
       <div className={classNames('border-custom')}>
@@ -71,6 +89,8 @@ export function Board({
           <Coordinates rowsAndColumns={rowsAndColumns} type="vertical" />
 
           <DndContext
+            onDragMove={handleDragMove}
+            onDragOver={handleDragOver}
             onDragEnd={handleDragEnd}
             modifiers={[snapToGridModifier]}
           >

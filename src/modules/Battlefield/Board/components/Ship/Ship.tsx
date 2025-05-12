@@ -14,15 +14,21 @@ const Ship = ({
   customClassName?: string;
   sizeShip?: SizeShip;
 }) => {
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: dataShip,
-    data: {
-      length: sizeShip === 'verySmall' ? 1 : 2,
-    },
-  });
+  const { attributes, listeners, setNodeRef, transform, active } = useDraggable(
+    {
+      id: dataShip,
+      data: {
+        length: sizeShip === 'verySmall' ? 1 : 2,
+        isError: false,
+      },
+    }
+  );
+  console.log(active?.data.current?.isError);
+
   const style = transform
     ? {
         transform: CSS.Translate.toString(transform),
+        backgroundColor: active?.data.current?.isError ? 'red' : 'green',
       }
     : {};
 
