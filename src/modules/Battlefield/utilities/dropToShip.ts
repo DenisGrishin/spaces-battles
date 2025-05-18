@@ -1,3 +1,6 @@
+import { createBorderShip } from './borderShip';
+
+// TODO пидумать что-то с этим много где используеться
 export interface PropsMoveToShip {
   boardState: string[][];
   shipId: string;
@@ -52,7 +55,6 @@ export const dropToShip = ({
 
         if (count || cellId === String(i)) {
           if (element) {
-            newRow.push(element);
             error = true;
             break;
           }
@@ -75,5 +77,10 @@ export const dropToShip = ({
     }
   );
 
-  return error ? boardState : updateBoard;
+  return createBorderShip({
+    boardState: error ? boardState : updateBoard,
+    shipId,
+    droppableId,
+    sizeShip,
+  });
 };

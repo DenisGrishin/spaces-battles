@@ -15,7 +15,11 @@ import {
 import { createSnapModifier } from '@dnd-kit/modifiers';
 import { DropCell } from '@/modules/DropCell';
 import { TableBoard } from './components/TabelBoard';
-import { createBorderShip, deleteBorderShip, dropToShip } from '../utilities';
+import {
+  deleteBorderShip,
+  dropToShip,
+  validateNotEmptyCell,
+} from '../utilities';
 import { ProsBoard } from './type';
 
 const SIZE_CELL: number = 70;
@@ -63,29 +67,33 @@ export function Board({
     const { active, over } = event;
 
     if (!over) return;
-    const notActiveShipStateBattlefield = dropToShip({
+
+    // TODO написать фукцию котроя будет опрделять есть ли под каробликм что-то или нет
+    const isValideteCell = validateNotEmptyCell({
       boardState: stateBattlefield,
-      shipId: active.id as string,
       droppableId: over.id as string,
-      sizeShip: active.data.current?.length,
     });
+    console.log(stateBattlefield);
+    if (isValideteCell) {
+      setActiveId(null);
+      return;
+    }
 
     const notActiveBoadrdStateBattlefield = deleteBorderShip({
-      boardState: notActiveShipStateBattlefield,
+      boardState: stateBattlefield,
       shipId: active.id as string,
     });
 
-    const borderStateBattlefield = createBorderShip({
+    const notActiveShipStateBattlefield = dropToShip({
       boardState: notActiveBoadrdStateBattlefield,
       shipId: active.id as string,
       droppableId: over.id as string,
       sizeShip: active.data.current?.length,
     });
 
-    console.log(borderStateBattlefield);
     dispatch({
       type: 'updateStateBattlefield',
-      newStateBattlefield: borderStateBattlefield as string[][],
+      newStateBattlefield: notActiveShipStateBattlefield as string[][],
     });
     setActiveId(null);
   }
