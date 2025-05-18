@@ -2,19 +2,20 @@ import classNames from 'classnames';
 
 import styles from './Board.module.css';
 import { Coordinates } from './components/Coordinates/Coordinates';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import Ship from './components/Ship/Ship';
 import {
   DndContext,
   DragEndEvent,
-  DragMoveEvent,
-  DragOverEvent,
+  DragOverlay,
+  DragStartEvent,
+  UniqueIdentifier,
 } from '@dnd-kit/core';
 
 import { createSnapModifier } from '@dnd-kit/modifiers';
 import { DropCell } from '@/modules/DropCell';
 import { TableBoard } from './components/TabelBoard';
-import { dropToShip, moveToShip } from '../utilities';
+import { createBorderShip, deleteBorderShip, dropToShip } from '../utilities';
 import { ProsBoard } from './type';
 
 const SIZE_CELL: number = 70;
@@ -25,9 +26,9 @@ export function Board({
   dispatch,
 }: ProsBoard) {
   const snapToGridModifier = createSnapModifier(SIZE_CELL);
+  const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
 
-  const ship = <Ship dataShip={'a1'} sizeShip="small" />;
-  const ship2 = <Ship dataShip={'b1'} />;
+  const ships = [{ dataShip: 'a-1', sizeShip: 'small' }, { dataShip: 'b-1' }];
 
   const renderTablet = useMemo(() => {
     return stateBattlefield.map((row, rowIndex, arr) => {
@@ -39,8 +40,17 @@ export function Board({
             className={styles.cell}
             arr={arr}
           >
-            {cell === 'a1' && ship}
-            {cell === 'b1' && ship2}
+            {ships.map((shipData) => {
+              return (
+                cell === shipData.dataShip && (
+                  <Ship
+                    key={shipData.dataShip}
+                    dataShip={shipData.dataShip}
+                    sizeShip={shipData.sizeShip as 'small'}
+                  />
+                )
+              );
+            })}
           </DropCell>
         );
       });
@@ -53,33 +63,37 @@ export function Board({
     const { active, over } = event;
 
     if (!over) return;
-    const newStateBattlefield = dropToShip({
+    const notActiveShipStateBattlefield = dropToShip({
       boardState: stateBattlefield,
       shipId: active.id as string,
       droppableId: over.id as string,
       sizeShip: active.data.current?.length,
     });
 
+    const notActiveBoadrdStateBattlefield = deleteBorderShip({
+      boardState: notActiveShipStateBattlefield,
+      shipId: active.id as string,
+    });
+
+    const borderStateBattlefield = createBorderShip({
+      boardState: notActiveBoadrdStateBattlefield,
+      shipId: active.id as string,
+      droppableId: over.id as string,
+      sizeShip: active.data.current?.length,
+    });
+
+    console.log(borderStateBattlefield);
     dispatch({
       type: 'updateStateBattlefield',
-      newStateBattlefield: newStateBattlefield as string[][],
+      newStateBattlefield: borderStateBattlefield as string[][],
     });
+    setActiveId(null);
   }
 
-  function handleDragMove(event: DragMoveEvent) {
-    console.log(event);
-
-    moveToShip(event);
+  function handleDragStart(event: DragStartEvent) {
+    setActiveId(event.active.id);
   }
-  function handleDragOver(event: DragOverEvent) {
-    const test = ['4-3'];
-    console.log(event);
-    if (test.includes(String(event.over?.id))) {
-      event.active.data.current.isError = true;
-    }
 
-    // TODO запоменаем расположение коорднинат короблей и тогда при перетаскивание всегда проряем точку
-  }
   return (
     <div className={classNames(styles.container)}>
       <div className={classNames('border-custom')}>
@@ -89,8 +103,7 @@ export function Board({
           <Coordinates rowsAndColumns={rowsAndColumns} type="vertical" />
 
           <DndContext
-            onDragMove={handleDragMove}
-            onDragOver={handleDragOver}
+            onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
             modifiers={[snapToGridModifier]}
           >
@@ -101,6 +114,20 @@ export function Board({
             >
               {renderTablet}
             </TableBoard>
+
+            <DragOverlay>
+              {ships.map((shipData) => {
+                return (
+                  activeId === shipData.dataShip && (
+                    <Ship
+                      key={shipData.dataShip}
+                      dataShip={shipData.dataShip}
+                      sizeShip={shipData.sizeShip as 'small'}
+                    />
+                  )
+                );
+              })}
+            </DragOverlay>
           </DndContext>
         </div>
       </div>

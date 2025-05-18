@@ -1,4 +1,4 @@
-interface PropsMoveToShip {
+export interface PropsMoveToShip {
   boardState: string[][];
   shipId: string;
   droppableId: string;
@@ -13,7 +13,7 @@ const deleteDragShip = ({
   const shipIdCell: string[] = [];
 
   for (let i = 1; i <= sizeShip; i++) {
-    shipIdCell.push(shipId[0] + i);
+    shipIdCell.push(`${shipId[0]}-${i}`);
   }
 
   return boardState.map((row) => {
@@ -38,7 +38,7 @@ export const dropToShip = ({
   let count = 0;
   const cor: string[] = [];
   for (let i = 1; i <= sizeShip; i++) {
-    cor.push(shipId[0] + i);
+    cor.push(`${shipId[0]}-${i}`);
   }
   // это прмеенная отвечает если мы поставили на существующтй каробыль
   let error = false;
@@ -56,6 +56,7 @@ export const dropToShip = ({
             error = true;
             break;
           }
+
           newRow.push(cor[count]);
 
           if (count === sizeShip - 1) {
